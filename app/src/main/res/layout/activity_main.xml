@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mid_green"
+    android:layout_marginHorizontal="30dp"
+    android:layout_marginBottom="30dp"
+    android:layout_marginTop="30dp"
+    android:gravity="center"
+    android:padding="16dp"
+
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:text="Welcome!"
+            android:textSize="32dp">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What is your name?"
+            android:textSize="20dp"
+            android:textAlignment="center">
+
+        </TextView>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Parent's name"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:id="@+id/parent_name"
+            android:textSize="20sp"
+            android:background="@drawable/round_rectangle_background"
+            android:padding="18dp"
+            android:inputType="text"
+            android:textAlignment="center">
+
+        </EditText>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What is your child's name"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center">
+
+        </TextView>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Child's name"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:id="@+id/child_name"
+            android:textSize="20sp"
+            android:background="@drawable/round_rectangle_background"
+            android:padding="18dp"
+            android:inputType="text"
+            android:textAlignment="center">
+
+        </EditText>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continue"
+            android:id="@+id/continue_button"
+            android:backgroundTint="@color/dark_green"
+            android:textColor="@color/white">
+
+        </Button>
+        
+    </LinearLayout>
+
+
+
+</LinearLayout>
