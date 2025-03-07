@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Chore {
     private String name;
     private int timeInSeconds;
-    static ArrayList<Chore> chores;
+    static ArrayList<Chore> chores = new ArrayList<Chore>();
 
 
     //constructor
@@ -32,16 +32,15 @@ public class Chore {
     public void addToChores(Chore newChore){
         chores.add(newChore);
     }
-    public boolean removeFromChores(Chore removeChore){
+    public static boolean removeFromChores(String removedChoreName){
 
-        String choreName = removeChore.getName();
-        int choreTime = removeChore.getTime();
-
+        if(!chores.isEmpty()){
         for(int i=0;i<chores.size();i++){
-            if(chores.get(i).getName().equals(choreName) && chores.get(i).getTime()==choreTime){
+            if(chores.get(i).getName().equals(removedChoreName)){
                 chores.remove(chores.get(i));
                 return true;
             }
+        }
         }
         return false;
     }

@@ -23,8 +23,9 @@ import com.tryingagain.Chore;
 
 public class ChoreListInitialEdit extends AppCompatActivity {
 
-    ArrayList<Chore> choreList = new ArrayList<>();
-    ArrayAdapter<Chore> adapter;
+
+    ArrayList<String> choreList = new ArrayList<>();
+    ArrayAdapter<String> adapter;
     EditText choreText, timeText;
     Button addButton, removeButton, continueButton;
     ListView lv;
@@ -64,15 +65,22 @@ public class ChoreListInitialEdit extends AppCompatActivity {
                     if(positionChecker.get(item)){
                         adapter.remove(choreList.get(item));
 
+                        if(Chore.removeFromChores(choreList.get(item))){
+                            Toast.makeText(ChoreListInitialEdit.this, "chore removed from class", Toast.LENGTH_SHORT).show();
+                        }
+
+
                         Toast.makeText(ChoreListInitialEdit.this, "Item Deleted Successfully", Toast.LENGTH_SHORT).show();
                     }
+
                 }
+
                 positionChecker.clear();
                 adapter.notifyDataSetChanged();
             }
         });
 
-        //add item (successful)
+        //add item (successful without Chore class implementation)
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,17 +92,15 @@ public class ChoreListInitialEdit extends AppCompatActivity {
                 else if(timeText.getText().toString().isEmpty()){
                     Toast.makeText(ChoreListInitialEdit.this, "Time field is mandatory", Toast.LENGTH_SHORT).show();
                 }
-                //checks to see if time is input in numbers only
-                else if(!(TextUtils.isDigitsOnly(timeText.getText()))){
-                    Toast.makeText(ChoreListInitialEdit.this, "Time must be input in seconds", Toast.LENGTH_SHORT).show();
-                }
                 else{
-                    int integer = timeText.getAutofillType();
-                    Chore newChore = new Chore(choreText.getText().toString(), integer);
-                    choreList.add(newChore);
-                    choreText.setText("");
+                    int integer = Integer.parseInt(timeText.getText().toString());
+                    choreList.add(choreText.getText().toString()); //actual adding action
                     timeText.setText("");
                     adapter.notifyDataSetChanged();
+
+                    //adding to Chore class list
+                    Chore.chores.add(new Chore(choreText.getText().toString(), integer));//uses the parsed int from the first line in else segment
+                    choreText.setText("");
                 }
             }
         });
