@@ -67,10 +67,11 @@ public class ChoreListInitialEdit extends AppCompatActivity {
 
                         if(Chore.removeFromChores(choreList.get(item))){
                             Toast.makeText(ChoreListInitialEdit.this, "chore removed from class", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChoreListInitialEdit.this, "Item Deleted Successfully", Toast.LENGTH_SHORT).show();
                         }
 
+                        Toast.makeText(ChoreListInitialEdit.this, "chore not deleted from class", Toast.LENGTH_SHORT).show();
 
-                        Toast.makeText(ChoreListInitialEdit.this, "Item Deleted Successfully", Toast.LENGTH_SHORT).show();
                     }
 
                 }
