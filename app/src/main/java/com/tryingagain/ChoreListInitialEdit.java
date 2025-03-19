@@ -1,6 +1,7 @@
 package com.tryingagain;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -30,7 +31,6 @@ public class ChoreListInitialEdit extends AppCompatActivity {
     Button addButton, removeButton, continueButton;
     ListView lv;
     ActivityChoreListInitialEditBinding binding;
-    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -48,32 +48,31 @@ public class ChoreListInitialEdit extends AppCompatActivity {
 
         lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE); //allows multiple items to be selected at once
 
-        sp = getApplicationContext().getSharedPreferences("MyUserPrefs", Context.MODE_PRIVATE);
-        String message = "What are " + sp.getString("child", "") + "'s chores?";
+        String message = "What are " + ParentInfo.getChildName() + "'s chores?";
         TextView display = binding.initialChoreText;
         display.setText(message);
 
         adapter = new ArrayAdapter<>(ChoreListInitialEdit.this, android.R.layout.simple_list_item_multiple_choice, choreList);
 
-        //removing item from list
+        //removing item from list (successful)
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SparseBooleanArray positionChecker = lv.getCheckedItemPositions();
                 int count = lv.getCount();
-                for(int item = count-1; item>=0; item--){
-                    if(positionChecker.get(item)){
-                        adapter.remove(choreList.get(item));
-
-                        if(Chore.removeFromChores(choreList.get(item))){
-                            Toast.makeText(ChoreListInitialEdit.this, "chore removed from class", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(ChoreListInitialEdit.this, "Item Deleted Successfully", Toast.LENGTH_SHORT).show();
+                //if there is only one item
+                if(count==1 && Chore.getChoreListSize()==1){
+                    adapter.remove(choreList.get(0));
+                    Chore.clearList();
+                }
+                //if there are multiple items in the list
+                else {
+                    for (int item = count-1; item >=0; item--) {
+                        if (positionChecker.get(item)) {
+                            adapter.remove(choreList.get(item)); //removes from string array
+                            Chore.removeFromChores(choreList.get(item));//removes from static array
                         }
-
-                        Toast.makeText(ChoreListInitialEdit.this, "chore not deleted from class", Toast.LENGTH_SHORT).show();
-
                     }
-
                 }
 
                 positionChecker.clear();
@@ -81,7 +80,7 @@ public class ChoreListInitialEdit extends AppCompatActivity {
             }
         });
 
-        //add item (successful without Chore class implementation)
+        //add item (successful)
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,20 +92,33 @@ public class ChoreListInitialEdit extends AppCompatActivity {
                 else if(timeText.getText().toString().isEmpty()){
                     Toast.makeText(ChoreListInitialEdit.this, "Time field is mandatory", Toast.LENGTH_SHORT).show();
                 }
+                //if both fields are fulfilled
                 else{
                     int integer = Integer.parseInt(timeText.getText().toString());
-                    choreList.add(choreText.getText().toString()); //actual adding action
+                    Chore newItem = new Chore(choreText.getText().toString(), integer);
+                    choreList.add(Chore.formatStringForView(newItem)); //actual adding action
                     timeText.setText("");
                     adapter.notifyDataSetChanged();
 
                     //adding to Chore class list
-                    Chore.chores.add(new Chore(choreText.getText().toString(), integer));//uses the parsed int from the first line in else segment
+                    Chore.addToChores(new Chore(choreText.getText().toString(), integer)); //uses the parsed int from the first line in else segment
                     choreText.setText("");
                 }
             }
         });
 
         lv.setAdapter(adapter);
+
+
+        //continue to next activity
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent intent = new Intent(ChoreListInitialEdit.this, ChildScreen.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }

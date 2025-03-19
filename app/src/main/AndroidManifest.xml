@@ -13,6 +13,18 @@
         android:theme="@style/Theme.TryingAgain"
         tools:targetApi="31">
         <activity
+            android:name=".Timer"
+            android:exported="false" />
+        <activity
+            android:name=".FinishedChoreScreen"
+            android:exported="false" />
+        <activity
+            android:name=".ParentSettingsEdit"
+            android:exported="false" />
+        <activity
+            android:name=".ChildScreen"
+            android:exported="false" />
+        <activity
             android:name=".ChoreListInitialEdit"
             android:exported="true" />
         <activity
