@@ -16,7 +16,6 @@ import com.tryingagain.databinding.ActivityDefineParentPasswordBinding;
 public class DefineParentPassword extends AppCompatActivity {
 
     ActivityDefineParentPasswordBinding binding;
-    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +23,7 @@ public class DefineParentPassword extends AppCompatActivity {
         binding = ActivityDefineParentPasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        sp = getApplicationContext().getSharedPreferences("MyUserPrefs", Context.MODE_PRIVATE);
-        String parentName = "Hello, " + sp.getString("parent","") + "!";
+        String parentName = "Hello, " + ParentInfo.getParentName() + "!";
 
         TextView display = findViewById(R.id.display_parent_name);
         display.setText(parentName);
@@ -38,50 +36,37 @@ public class DefineParentPassword extends AppCompatActivity {
 
                 String finalPassword = binding.parentPassword.getText().toString();
                 String testPassword = binding.confirmPassword.getText().toString();
-                Integer screenTimeAmount= Integer.parseInt(binding.screenTimeAmount.getText().toString());
+                String parentEmail= binding.defineParentEmail.getText().toString();
 
-                if (finalPassword.equals(testPassword) && !finalPassword.isEmpty()) {
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("parentPassword", finalPassword);
-                    editor.apply();
+                if (finalPassword.equals(testPassword) && !finalPassword.isEmpty() && !parentEmail.isEmpty()) {
+                    ParentInfo.setPassword(finalPassword);
+                    ParentInfo.setParentEmail(parentEmail);
 
-                    Toast.makeText(DefineParentPassword.this, "Password Saved Successfully", Toast.LENGTH_SHORT).show();
-
-                    if(screenTimeAmount<1){
-                        Toast.makeText(DefineParentPassword.this, "Enter a time limit", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        editor.putInt("timeLimit", screenTimeAmount);
-                        editor.apply();
-
-                        Intent next = new Intent(DefineParentPassword.this, ChoreListInitialEdit.class);
-                        startActivity(next);
-                    }
-
+                    Intent intent = new Intent(DefineParentPassword.this, ChoreListInitialEdit.class);
+                    finish();
+                    startActivity(intent);
                 }
                 else{
-                    if(finalPassword.isEmpty() || testPassword.isEmpty()){
+                    if(finalPassword.isEmpty() || testPassword.isEmpty() || parentEmail.isEmpty()){
                         Toast.makeText(DefineParentPassword.this, "All fields are mandatory", Toast.LENGTH_SHORT).show();
 
                     }
                     else{
                         Toast.makeText(DefineParentPassword.this, "Passwords must match", Toast.LENGTH_SHORT).show();
                     }
-
-                    //going back to login/name declaration
-                    binding.backToNameDeclaration.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(DefineParentPassword.this, DeclareNames.class);
-                            startActivity(intent);
-                        }
-                    });
                 }
             }
         });
 
-
-
+        //going back to login/name declaration
+        binding.backToNameDeclaration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                Intent intent = new Intent(DefineParentPassword.this, DeclareNames.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
