@@ -29,7 +29,6 @@ public class ChildScreen extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     TextView helloChild;
     EditText passDialog;
-    SharedPreferences sp;
     ActivityChildScreenBinding binding;
     Dialog dialog;
 
