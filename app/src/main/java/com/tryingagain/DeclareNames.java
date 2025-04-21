@@ -1,8 +1,8 @@
  package com.tryingagain;
 
-import android.content.Context;
+import static com.tryingagain.ParentInfo.*;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +16,6 @@ import com.tryingagain.databinding.ActivityMainBinding;
  public class DeclareNames extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    SharedPreferences sp;
     EditText parentName, childName;
     Button continueButton;
 
@@ -26,11 +25,7 @@ import com.tryingagain.databinding.ActivityMainBinding;
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        parentName = findViewById(R.id.parent_name);
-        childName = findViewById(R.id.child_name);
         continueButton = findViewById(R.id.continue_button);
-        //SharedPreferences
-        sp = getSharedPreferences("MyUserPrefs", Context.MODE_PRIVATE);
 
         binding.continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,12 +34,12 @@ import com.tryingagain.databinding.ActivityMainBinding;
                 String cname = binding.childName.getText().toString();
 
                 if(!pname.isEmpty() && !cname.isEmpty()){
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("parent", pname);
-                editor.putString("child", cname);
-                editor.apply();
+                    setChildName(cname);
+                    setParentName(pname);
+
                 Toast.makeText(DeclareNames.this, "User info successfully saved", Toast.LENGTH_SHORT).show();
 
+                finish();
                 Intent intent = new Intent(DeclareNames.this, DefineParentPassword.class);
                 startActivity(intent);
                 }
